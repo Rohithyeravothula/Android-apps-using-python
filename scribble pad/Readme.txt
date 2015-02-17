@@ -1,0 +1,1 @@
+apk for application is in "bin" folder to run this app just download that apk file to your android mobile
