@@ -1,0 +1,41 @@
+from random import random
+from kivy.app import App
+from kivy.uix.widget import Widget
+from kivy.uix.button import Button
+from kivy.graphics import Color, Ellipse, Line
+from kivy.uix.floatlayout import FloatLayout
+from kivy.core.window import Window 
+from kivy.uix.textinput import TextInput
+Window.clearcolor=(1,1,1,1)
+class MyPaintWidget(Widget):
+    def on_touch_down(self, touch):
+        with self.canvas:
+            Color(1.0,1.0,0)
+            touch.ud['line'] = Line(points=(touch.x, touch.y),width=4.5)
+
+    def on_touch_move(self, touch):
+        touch.ud['line'].points += [touch.x, touch.y]
+
+class Myinputwidget(Widget):
+    def on_text(instance, value):
+        textinput=TextInput()
+        textinput.bind(text=on_text)
+
+class MyPaintApp(App):
+
+    def build(self):
+        parent = Widget()
+        painter = MyPaintWidget()
+        clearbtn = Button(text='Clear',size_hint=(0.2,0.2),pos_hint={'x':0,'y':0})
+        #inputbutton=Button(text='Pensilsize',size_hint=(0.5,0.5),pos_hint={'x':.5,'y':.5})
+        parent.add_widget(painter)
+        parent.add_widget(clearbtn)
+        #parent.add_widget(inputbutton)
+        def clear_canvas(obj):
+            painter.canvas.clear()
+        clearbtn.bind(on_release=clear_canvas)
+        return parent
+
+
+if __name__ == '__main__':
+    MyPaintApp().run()
